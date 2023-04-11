@@ -1,0 +1,69 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Query Area</h1>
+
+                <div style="display: flex; align-items: center;">
+                    <form method="POST" action="/search" class="d-flex flex-column">
+                        <input class="form-control me-2" type="search" placeholder="Search Title" aria-label="Search_Title" name="searched_title">
+                        <input class="form-control me-2" type="search" placeholder="Search Artist" aria-label="Search_Artist" name="searched_artist">
+                        <input class="form-control me-2" type="search" placeholder="Search Year" aria-label="Search_Year" name="searched_year">
+                        <button class="btn btn-outline-secondary" type="submit">Query</button>
+                    </form>
+                </div>
+
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <ul class="flashes">
+                    {% for message in messages %}
+                      <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
+
+            </div>
+            <div class="col-md-6 music">
+                <h1>All Music</h1>
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <p>{{msg}}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Artist</th>
+                                <th>Year</th>
+                                <th>Image</th>
+                                <th>Subscribe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for track in music %}
+                            <tr>
+                                <td>{{track['title']}}</td>
+                                <td>{{track['artist']}}</td>
+                                <td>{{track['year']}}</td>
+                                <td><img src="{{track['s3_image']}}" width="50%" height="50%"></td>
+                                <td><a href="/subscribe?track_id={{track['title']}}">Subscribe</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

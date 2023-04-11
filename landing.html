@@ -1,0 +1,81 @@
+{% extends "home.html" %}
+
+
+{% block content %}
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="user-area">
+                <h1>User Area</h1>
+                <table>
+                    <tr>
+                        <td>Logged in User:</td>
+                        <td>{{user}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="subscription-area">
+                <h1>Subscription Area</h1>
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <p>{{msg}}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                {% if not music %}
+                    <p>You are not subscribed to any music - Find music <a href="{{ url_for('all_music') }}">here</a></p>
+                {% else %}
+
+                    <table>
+                        <tr>
+                            <th>Title</th>
+                            <th>Artist</th>
+                            <th>Year</th>
+                            <th>Image</th>
+                            <th>Remove</th>
+                        </tr>
+                        {% for track in music %}
+                        <tr>
+                            <td>{{track['title']}}</td>
+                            <td>{{track['artist']}}</td>
+                            <td>{{track['year']}}</td>
+                            <td><img src="{{track['s3_image']}}" width="50%" height="50%"></td>
+                            <td><a href="{{ url_for('delete', title=track['title']) }}">Remove</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="query-area">
+                <h1>Query Area</h1>
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="/search" class="d-flex flex-column">
+                    <input class="form-control me-2" type="search" placeholder="Search Title" aria-label="Search_Title" name="searched_title">
+                    <input class="form-control me-2" type="search" placeholder="Search Artist" aria-label="Search_Artist" name="searched_artist">
+                    <input class="form-control me-2" type="search" placeholder="Search Year" aria-label="Search_Year" name="searched_year">
+                    <button class="btn btn-outline-secondary" type="submit">Query</button>
+                </form>
+            </div>
+        </div>
+
+{% endblock content %}

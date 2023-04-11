@@ -1,0 +1,34 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+
+<h2>You searched for .....</h2>
+<p> Title: {{ searched1 }}</p>
+<p> Artist: {{ searched2 }}</p>
+<p> Year: {{ searched3 }}</p>
+
+
+<br/>
+
+<table>
+  <tr>
+      <th>Title</th>
+      <th>Artist</th>
+      <th>Year</th>
+      <th>Image</th>
+      <th>Subscribe</th>
+    </tr>
+  {% for track in result %}
+  <tr>
+    <td>{{track['title']}}</td>
+    <td>{{track['artist']}}</td>
+    <td>{{track['year']}}</td>
+    <td><img src="{{track['s3_image']}}" width="25%" height="25%"></td>
+    <td><a href="/subscribe?track_id={{track['title']}}">Suscribe</a></td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+  {% endblock %}
